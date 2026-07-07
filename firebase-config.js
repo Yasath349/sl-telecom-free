@@ -1,20 +1,21 @@
-// ==========================================
-// Firebase Configuration - 100% FREE
-// 1. console.firebase.google.com yanna
-// 2. Create Project → Project name: "sl-telecom"
-// 3. Add Web App → Copy config
-// 4. Realtime Database → Create → Start in test mode
-// ==========================================
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "sl-telecom.firebaseapp.com",
-    databaseURL: "https://sl-telecom-default-rtdb.firebaseio.com",
-    projectId: "sl-telecom",
-    storageBucket: "sl-telecom.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abc123def456"
+  apiKey: "AIzaSyB6byqFLhDCOOivmMwpiF0N0cnpjeNwk3k",
+  authDomain: "sl-telecom-d6855.firebaseapp.com",
+  projectId: "sl-telecom-d6855",
+  storageBucket: "sl-telecom-d6855.firebasestorage.app",
+  messagingSenderId: "292283006106",
+  appId: "1:292283006106:web:faed88098e363ecf7bb323",
+  measurementId: "G-E1ZRB05ZNM"
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
